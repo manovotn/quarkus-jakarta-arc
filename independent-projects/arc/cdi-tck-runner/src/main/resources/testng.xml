@@ -151,11 +151,6 @@
                     <exclude name="testDeploymentFails"/>
                 </methods>
             </class>
-            <class name="org.jboss.cdi.tck.tests.vetoed.VetoedTest">
-                <methods>
-                    <exclude name="testPackageLevelVeto"/>
-                </methods>
-            </class>
             <class name="org.jboss.cdi.tck.tests.event.broken.raw.RawEventDisposerInjectionTest">
                 <methods>
                     <exclude name="testDefinitionError"/>
