@@ -456,11 +456,6 @@
                     <exclude name="testMultipleTransitiveIncompatibleScopeStereotypes"/>
                 </methods>
             </class>
-            <class name="org.jboss.cdi.tck.tests.lookup.typesafe.resolution.ResolutionByTypeTest">
-                <methods>
-                    <exclude name="testResolveByTypeWithArray"/>
-                </methods>
-            </class>
             <class name="org.jboss.cdi.tck.tests.lookup.clientProxy.unproxyable.primitive.UnproxyableTest">
                 <methods>
                     <exclude name="testInjectionPointWithUnproxyableTypeWhichResolvesToNormalScopedBean"/>
@@ -656,11 +651,6 @@
             <class name="org.jboss.cdi.tck.tests.implementation.producer.method.broken.parameterAnnotatedDisposes.ParameterAnnotatedDisposesTest">
                 <methods>
                     <exclude name="testProducerMethodWithParameterAnnotatedDisposes"/>
-                </methods>
-            </class>
-            <class name="org.jboss.cdi.tck.tests.implementation.producer.field.definition.ProducerFieldDefinitionTest">
-                <methods>
-                    <exclude name="testApiTypeForArrayTypeReturn"/>
                 </methods>
             </class>
             <class name="org.jboss.cdi.tck.tests.definition.stereotype.broken.multiplePriorities.ConflictingPrioritiesFromSingleStereotypeTest">
