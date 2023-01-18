@@ -589,11 +589,6 @@
                     <exclude name="testDuplicateBeanNamePrefix"/>
                 </methods>
             </class>
-            <class name="org.jboss.cdi.tck.tests.lookup.typesafe.resolution.primitive.PrimitiveInjectionPointTest">
-                <methods>
-                    <exclude name="testPrimitiveInjectionPointResolvedToNonPrimitiveProducerMethod"/>
-                </methods>
-            </class>
             <class name="org.jboss.cdi.tck.tests.implementation.producer.method.broken.array.ProducerMethodArrayTypeVariableTest">
                 <methods>
                     <exclude name="testBeanTypes"/>
