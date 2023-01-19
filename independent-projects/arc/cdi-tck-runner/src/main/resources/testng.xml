@@ -356,11 +356,6 @@
                     <exclude name="testScopeTypesAreExtensible"/>
                 </methods>
             </class>
-            <class name="org.jboss.cdi.tck.tests.lookup.byname.broken.injectionPointWithNamed2.NamedNonFieldInjectionPointTest">
-                <methods>
-                    <exclude name="testNamedObserverMethodInjectionPointNotAllowed"/>
-                </methods>
-            </class>
             <class name="org.jboss.cdi.tck.tests.lookup.dependency.resolution.AmbiguousDependencyResolutionTest">
                 <methods>
                     <exclude name="testProducerMethodOnAlternativeIsNotEliminated"/>
@@ -376,11 +371,6 @@
             <class name="org.jboss.cdi.tck.tests.event.broken.observer.isProducer.ObserverMethodAnnotatedProducesTest">
                 <methods>
                     <exclude name="testObserverMethodAnnotatedProducesFails"/>
-                </methods>
-            </class>
-            <class name="org.jboss.cdi.tck.tests.lookup.injectionpoint.named.NamedAtInjectionPointTest">
-                <methods>
-                    <exclude name="testFieldNameUsedAsBeanName"/>
                 </methods>
             </class>
             <class name="org.jboss.cdi.tck.tests.lookup.injectionpoint.InjectableReferenceTest">
@@ -424,16 +414,6 @@
                     <exclude name="testPrivateAroundInvokeInterceptor"/>
                     <exclude name="testPackagePrivateAroundInvokeInterceptor"/>
                     <exclude name="testProtectedAroundInvokeInterceptor"/>
-                </methods>
-            </class>
-            <class name="org.jboss.cdi.tck.tests.lookup.byname.broken.injectionPointWithNamed.NamedNonFieldInjectionPointTest">
-                <methods>
-                    <exclude name="testNamedProducerInjectionPointNotAllowed"/>
-                </methods>
-            </class>
-            <class name="org.jboss.cdi.tck.tests.lookup.byname.broken.injectionPointWithNamed3.NamedNonFieldInjectionPointTest">
-                <methods>
-                    <exclude name="testNamedInitializerMethodInjectionPointNotAllowed"/>
                 </methods>
             </class>
             <class name="org.jboss.cdi.tck.tests.definition.qualifier.builtin.BuiltInQualifierDefinitionTest">
