@@ -31,8 +31,8 @@ import org.jboss.jandex.IndexView;
 import org.jboss.jandex.Indexer;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
-import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
+import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
@@ -71,18 +71,33 @@ final class Deployer {
         }
     }
 
-    private void explodeWar() throws IOException {
-        List<String> beanArchivePrefixes = new ArrayList<>();
-        for (Map.Entry<ArchivePath, Node> entry : deploymentArchive.getContent(Filters.include(".*/beans.xml")).entrySet()) {
-            if (isBeanArchive(entry.getValue().getAsset())) {
-                String beansXmlPath = entry.getKey().get();
-                if (beansXmlPath.endsWith("META-INF/beans.xml")) {
-                    beanArchivePrefixes.add(beansXmlPath.replace("META-INF/beans.xml", ""));
+    private List<String> findBeansXml(List<String> beanArchivePrefixes, Archive<?> archive, String archivePrefix)
+            throws IOException {
+        for (Map.Entry<ArchivePath, Node> entry : archive.getContent().entrySet()) {
+            if (entry.getValue() == null || entry.getValue().getAsset() == null) {
+                continue;
+            }
+            Asset asset = entry.getValue().getAsset();
+            if (asset instanceof ArchiveAsset) {
+                // this is a JAR what we want to check for beans.xml as well
+                findBeansXml(beanArchivePrefixes, ((ArchiveAsset) asset).getArchive(), entry.getKey().get());
+            } else if (isBeanArchive(entry.getValue().getAsset())) {
+                String beansXmlPath = archivePrefix + entry.getKey().get();
+                if (beansXmlPath.endsWith("/META-INF/beans.xml")) {
+                    beanArchivePrefixes.add(beansXmlPath.replace("/META-INF/beans.xml", ""));
                 } else if (beansXmlPath.endsWith("WEB-INF/beans.xml")) {
                     beanArchivePrefixes.add(beansXmlPath.replace("WEB-INF/beans.xml", "WEB-INF/classes"));
                 }
             }
+
         }
+        return beanArchivePrefixes;
+    }
+
+    private void explodeWar() throws IOException {
+        List<String> beanArchivePrefixes = new ArrayList<>();
+        // identify all archives that are bean archives
+        findBeansXml(beanArchivePrefixes, deploymentArchive, "");
 
         for (Map.Entry<ArchivePath, Node> entry : deploymentArchive.getContent().entrySet()) {
             Asset asset = entry.getValue().getAsset();
@@ -108,7 +123,22 @@ final class Deployer {
             } else if (path.startsWith("/WEB-INF/lib/")) {
                 String jarFile = path.replace("/WEB-INF/lib/", "");
                 Path jarFilePath = deploymentDir.appLibraries.resolve(jarFile);
+                // TODO why copy whole JAR if we then dost scan it anyway?
                 copy(asset, jarFilePath);
+                // TODO this jar can have beans in it and we can tell if that's the case, how do we add them?
+                if (isInBeanArchive) {
+                    for (Map.Entry<ArchivePath, Node> jarEntry : ((ArchiveAsset) asset).getArchive().getContent().entrySet()) {
+                        if (jarEntry.getValue() == null || jarEntry.getValue().getAsset() == null
+                                || jarEntry.getKey().get().contains("beans.xml")) {
+                            continue;
+                        }
+                        String pathInsideJar = jarEntry.getKey().get().substring(1); // remove first "/"
+                        Path classFilePath = deploymentDir.appClasses.resolve(pathInsideJar);
+                        copy(asset, classFilePath);
+                        System.err.println("class from JAR that's supposed to be a bean " + pathInsideJar);
+                        beanArchivePaths.add(pathInsideJar);
+                    }
+                }
             }
         }
     }
